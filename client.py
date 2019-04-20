@@ -38,7 +38,7 @@ args = vars(ap.parse_args())
 # initialize the ImageSender object with the socket address of the
 # server
 sender = ImageSender(connect_to="tcp://{}:5555".format(
-    args["server_ip"]), send_timeout=10)
+    args["server_ip"]), send_timeout=10, recv_timeout=10)
 
 # get the host name, initialize the video stream, and allow the
 # camera sensor to warmup
@@ -63,4 +63,4 @@ while True:
     except TimeoutError:
         print("Sending timeout.. reconnect to server")
         sender = ImageSender(connect_to="tcp://{}:5555".format(
-            args["server_ip"]), send_timeout=10)
+            args["server_ip"]), send_timeout=10, recv_timeout=10)
