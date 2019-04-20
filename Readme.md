@@ -12,7 +12,7 @@ and then wrapped those up in my github repo [here](https://github.com/youngsoul/
 
 Beyond that follow the instructions in the PyImageSearch blog for the rest of the live stream work.
 
-## slient.py
+## client.py
 
 I noticed that the client did not behave well if the server was shutdown after the client was connected.  Once the server was restarted the client would not automatically re-connect.  To address this I did two things:
 
