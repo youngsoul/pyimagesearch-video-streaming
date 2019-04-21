@@ -24,5 +24,21 @@ I noticed that the client did not behave well if the server was shutdown after t
 
 No changes to server code - it just worked!
 
+[Update:] I did change the server to add face recognition.  See below.
 
 
+## Face Recognition
+
+Adding on to the streaming example, I have incorporated the content from the [PyImageSearch Face Recognition Post](https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/)
+
+Facial recognition uses the very helpful [face_recognition](https://github.com/ageitgey/face_recognition) Python package.
+
+This extension added two additiona command line options:
+```python
+
+ap.add_argument("-fd", "--face-detect", required=False, type=int, default=0,
+                help="0 - no face dectection, 1 - face detection")
+ap.add_argument("-dm", "--detection-method", type=str, default='hog',
+                help="face detection model to use: either 'hog' or 'cnn' ")
+
+```
