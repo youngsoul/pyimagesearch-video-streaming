@@ -42,3 +42,31 @@ ap.add_argument("-dm", "--detection-method", type=str, default='hog',
                 help="face detection model to use: either 'hog' or 'cnn' ")
 
 ```
+
+## DeepLens Client
+
+I added a client implementation for the AWS DeepLens.  In this case the client is just acting as a WebCam passing images, much like the raspberry pi client.  The difference is in how you access the Video frames on DeepLens.  AND.. the package awscam, is only supported in Python 2.7.
+
+```text
+As far as I can tell, cv2 VideoCapture will not work on DeepLens.  There is another library called
+awscam, that is only supported in Python 2.7.
+
+To install the necessary libraries on DeepLens:
+
+- Log into DeepLens
+
+sudo pip2 install imutils
+sudo pip2 install zmq
+
+You then need to pull a github library:
+https://github.com/youngsoul/imagezmq
+
+cd to project root directory
+execute:
+ln -s <clone directory>/imagezmg imagezmq
+
+so the imagezmq library is available to this file.
+
+
+python2 deeplens_client.py --server-ip 192.168.1.208
+```
