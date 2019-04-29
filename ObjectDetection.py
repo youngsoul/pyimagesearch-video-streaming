@@ -8,13 +8,17 @@ import time
 
 class ObjectDetection:
 
-    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2):
+    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None):
         """
 
         :param detection_method: hog of cnn
         :param recognize_faces:
         :param use_pi_camera:
         :param min_confidence: minimum probability to filter weak detections
+        :param face_detector None - use face_recognition face_locations method.  This implementation is not RPI friendly.
+                            detector = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
+                            More efficient face detector, but not as accurate.
+
         """
         self.recognize_faces = recognize_faces
         self.detection_method = detection_method
@@ -28,6 +32,7 @@ class ObjectDetection:
         self.CONSIDER = set(["dog", "person", "car"])
         self.objCount = {obj: 0 for obj in self.CONSIDER}
         self.min_confidence = min_confidence
+        self.face_detector = face_detector
         self.video_stream = VideoStream(usePiCamera=use_pi_camera).start()
         time.sleep(2)  # let video cam warm up
 
@@ -89,7 +94,7 @@ class ObjectDetection:
                             print("found person")
                             # face detect
                             if self.recognize_faces:
-                                frame, names = face_encode_frame(frame, self.detection_method)
+                                frame, names = face_encode_frame(frame, self.detection_method, self.face_detector)
                                 if names:
                                     print(f"Found: {names}")
 

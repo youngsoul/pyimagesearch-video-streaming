@@ -13,11 +13,15 @@ data = pickle.loads(open(encodings_file, "rb").read())
 print("[INFO] loading encodings... DONE")
 
 
-def face_encode_frame(frame, detection_method):
+def face_encode_frame(frame, detection_method, face_detector=None):
     """
 
     :param frame:
     :param detection_method:
+    :param face_detector None - use face_recognition face_locations method which is accurate at the expense of cpu
+                        cycles.
+                        detector = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
+                        is much more efficient, and suitable for RPI but less accurate
     :return: frame and list of found names
     """
 
@@ -25,11 +29,24 @@ def face_encode_frame(frame, detection_method):
     # of 750px (to speedup processing)
     rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     rgb_image = imutils.resize(rgb_image, width=750)
+    gray = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2GRAY)
     r = frame.shape[1] / float(rgb_image.shape[1])
 
     # detect the (x,y)-coordinates of the bounding boxes corresponding to each face in the
     # input frame, then compute the facial embeddings for each face
-    boxes = face_recognition.face_locations(rgb_image, model=detection_method)
+    if face_detector:
+        # detect faces in the grayscale frame
+        rects = face_detector.detectMultiScale(gray, scaleFactor=1.1,
+                                          minNeighbors=5, minSize=(30, 30),
+                                          flags=cv2.CASCADE_SCALE_IMAGE)
+
+        # OpenCV returns bounding box coordinates in (x, y, w, h) order
+        # but we need them in (top, right, bottom, left) order, so we
+        # need to do a bit of reordering
+        boxes = [(y, x + w, y + h, x) for (x, y, w, h) in rects]
+    else:
+        boxes = face_recognition.face_locations(rgb_image, model=detection_method)
+
     encodings = face_recognition.face_encodings(rgb_image, boxes)
 
     names = []
