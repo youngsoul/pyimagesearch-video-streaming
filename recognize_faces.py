@@ -47,6 +47,11 @@ def face_encode_frame(frame, detection_method, face_detector=None):
     else:
         boxes = face_recognition.face_locations(rgb_image, model=detection_method)
 
+
+    if len(boxes) == 0:
+        # then we have no faces.. so just get out
+        return frame, []
+
     encodings = face_recognition.face_encodings(rgb_image, boxes)
 
     names = []
