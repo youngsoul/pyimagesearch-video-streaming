@@ -10,6 +10,7 @@ encodings_file = "./encodings/pr_encodings.pkl"
 # load the known faces and embeddings
 print("[INFO] loading encodings...")
 data = pickle.loads(open(encodings_file, "rb").read())
+print("[INFO] loading encodings... DONE")
 
 
 def face_encode_frame(frame, detection_method):

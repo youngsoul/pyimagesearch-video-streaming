@@ -24,7 +24,7 @@ ap.add_argument("-mW", "--montageW", required=True, type=int,
 ap.add_argument("-mH", "--montageH", required=True, type=int,
                 help="montage frame height")
 ap.add_argument("-fd", "--face-detect", required=False, type=int, default=0,
-                help="0 - no face dectection, 1 - face detection")
+                help="0 - no face detection, 1 - face detection")
 ap.add_argument("-dm", "--detection-method", type=str, default='hog',
                 help="face detection model to use: either 'hog' or 'cnn' ")
 
