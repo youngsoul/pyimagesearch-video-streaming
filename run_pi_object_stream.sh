@@ -1,0 +1,1 @@
+python pi_objectdetect_and_stream.py --server-ip 192.168.1.208

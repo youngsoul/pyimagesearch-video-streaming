@@ -4,11 +4,11 @@
 # import the necessary packages
 from imutils.video import VideoStream
 from imagezmq.imagezmq import ImageSender
-import argparse
 import socket
 import time
 import signal
 from contextlib import contextmanager
+import argparse
 
 
 @contextmanager

@@ -2,6 +2,9 @@
 
 This repo has code from the [PyImageSearch Blog](https://www.pyimagesearch.com/2019/04/15/live-video-streaming-over-network-with-opencv-and-imagezmq/) post.
 
+The project has been extended to not only send video, via client.py, but also if you have a display connected you 
+can detect objects from the RPI and display it on the local RPI and do face recognition.
+
 ## Setup
 
 The full setup on a Raspberry Pi can and likely will take a long time.
@@ -11,6 +14,14 @@ I used PyImageSearch instructions found [here](https://www.pyimagesearch.com/201
 and then wrapped those up in my github repo [here](https://github.com/youngsoul/pyimagesearch-py-face-recognition)
 
 Beyond that follow the instructions in the PyImageSearch blog for the rest of the live stream work.
+
+## ImageZMQ
+
+I am using my fork of this library because I wanted read/write timeouts on the socket.
+
+https://github.com/youngsoul/imagezmq
+
+
 
 ## client.py
 
@@ -70,3 +81,54 @@ so the imagezmq library is available to this file.
 
 python2 deeplens_client.py --server-ip 192.168.1.208
 ```
+
+
+## Setup RaspberryPI
+
+sudo raspi-config
+interfacing options
+P1 Camera
+make sure it is enabled.
+
+
+mkdir where you want to install (git clone) the library
+
+e.g.  /home/pi/dev/imagezmq
+
+git clone https://github.com/youngsoul/imagezmq
+
+cd /home/pi/cv2_env/lib/python3.6/site-packages
+
+ln -s /home/pi/dev/imagezmq/imagezmq imagezmq
+
+pip install zmq
+pip install imutils
+pip install picamera
+
+If you just want to stream the video to the server you just need **client.py**
+
+execute: python client.py --server-ip 192.168.1.208
+
+
+### Files to download to RaspberryPI
+
+Create a directory
+
+- encodings/pr_encodings.pkl
+
+- haarcascade_frontalface_default.xml
+
+- MobileNetSSD_deploy.prototxt
+
+- pi_objectdetect.py
+
+- recognize_faces.py
+
+- MobileNetSSD_deploy.caffemodel
+
+- ObjectDetection.py
+
+
+
+
+

@@ -8,7 +8,7 @@ import time
 
 class ObjectDetection:
 
-    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None):
+    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None, frame_callback=None):
         """
 
         :param detection_method: hog of cnn
@@ -20,6 +20,7 @@ class ObjectDetection:
                             More efficient face detector, but not as accurate.
 
         """
+        self.frame_callback = frame_callback
         self.recognize_faces = recognize_faces
         self.detection_method = detection_method
         # initialize the list of class labels MobileNet SSD was trained to
@@ -97,6 +98,9 @@ class ObjectDetection:
                                 frame, names = face_encode_frame(frame, self.detection_method, self.face_detector)
                                 if names:
                                     print(f"Found: {names}")
+
+            if self.frame_callback:
+                self.frame_callback(frame)
 
             cv2.imshow("Image", frame)
             # detect any kepresses
