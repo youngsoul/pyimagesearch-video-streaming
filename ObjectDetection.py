@@ -11,7 +11,7 @@ class ObjectDetection:
     def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None, frame_callback=None):
         """
 
-        :param detection_method: hog of cnn
+        :param detection_method: hog or cnn
         :param recognize_faces:
         :param use_pi_camera:
         :param min_confidence: minimum probability to filter weak detections
@@ -40,6 +40,9 @@ class ObjectDetection:
     def detect_objects(self):
         while True:
             frame = self.video_stream.read()
+
+            if self.frame_callback:
+                self.frame_callback(frame)
 
             # resize the frame to have a maximum width of 400 pixels, then
             # grab the frame dimensions and construct a blob
@@ -98,9 +101,6 @@ class ObjectDetection:
                                 frame, names = face_encode_frame(frame, self.detection_method, self.face_detector)
                                 if names:
                                     print(f"Found: {names}")
-
-            if self.frame_callback:
-                self.frame_callback(frame)
 
             cv2.imshow("Image", frame)
             # detect any kepresses

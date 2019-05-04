@@ -36,7 +36,7 @@ def face_encode_frame(frame, detection_method, face_detector=None):
     # input frame, then compute the facial embeddings for each face
     if face_detector:
         # detect faces in the grayscale frame
-        rects = face_detector.detectMultiScale(gray, scaleFactor=1.1,
+        rects = face_detector.detectMultiScale(gray, scaleFactor=1.05,
                                           minNeighbors=5, minSize=(30, 30),
                                           flags=cv2.CASCADE_SCALE_IMAGE)
 
@@ -50,6 +50,7 @@ def face_encode_frame(frame, detection_method, face_detector=None):
 
     if len(boxes) == 0:
         # then we have no faces.. so just get out
+        print("No faces detected....")
         return frame, []
 
     encodings = face_recognition.face_encodings(rgb_image, boxes)

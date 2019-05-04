@@ -16,14 +16,18 @@ timestamp_of_last_socket_refresh = time.time()
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-s", "--server-ip", required=True,
+ap.add_argument("-s", "--server-ip", required=False, default=None,
                 help="ip address of the server to which the client will connect")
+
 args = vars(ap.parse_args())
 
 # initialize the ImageSender object with the socket address of the
 # server
-sender = ImageSender(connect_to="tcp://{}:5555".format(
-    args["server_ip"]), send_timeout=10, recv_timeout=10)
+if args['server_ip']:
+    sender = ImageSender(connect_to="tcp://{}:5555".format(
+        args["server_ip"]), send_timeout=10, recv_timeout=10)
+else:
+    sender = None
 
 # get the host name, initialize the video stream, and allow the
 # camera sensor to warmup
@@ -56,9 +60,13 @@ def new_frame_callback(frame):
     frame_queue.put_nowait(frame)
 
 
+cb = new_frame_callback
+if sender is None:
+    cb = None
+
 detector = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
 
 object_detection = ObjectDetection(use_pi_camera=True, recognize_faces=True, face_detector=detector,
-                                   frame_callback=new_frame_callback)
+                                   frame_callback=cb, detection_method='hog')
 
 object_detection.detect_objects()
