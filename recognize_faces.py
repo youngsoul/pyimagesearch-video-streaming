@@ -3,6 +3,7 @@ import face_recognition
 import pickle
 import cv2
 import imutils
+import platform
 
 
 encodings_file = "./encodings/pr_encodings.pkl"
@@ -36,21 +37,26 @@ def face_encode_frame(frame, detection_method, face_detector=None):
     # input frame, then compute the facial embeddings for each face
     if face_detector:
         # detect faces in the grayscale frame
-        rects = face_detector.detectMultiScale(gray, scaleFactor=1.05,
+        scale_factor = 1.1
+        if platform.system() == 'Linux':
+            scale_factor = 1.05
+
+        rects = face_detector.detectMultiScale(gray, scaleFactor=scale_factor,
                                           minNeighbors=5, minSize=(30, 30),
                                           flags=cv2.CASCADE_SCALE_IMAGE)
 
         # OpenCV returns bounding box coordinates in (x, y, w, h) order
         # but we need them in (top, right, bottom, left) order, so we
         # need to do a bit of reordering
-        boxes = [(y, x + w, y + h, x) for (x, y, w, h) in rects]
+        # I added the w and h restriction so background objects were avoided
+        boxes = [(y, x + w, y + h, x) for (x, y, w, h) in rects if w > 70 and h > 70]
     else:
         boxes = face_recognition.face_locations(rgb_image, model=detection_method)
 
 
     if len(boxes) == 0:
         # then we have no faces.. so just get out
-        print("No faces detected....")
+        # print("No faces detected....")
         return frame, []
 
     encodings = face_recognition.face_encodings(rgb_image, boxes)
