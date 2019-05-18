@@ -25,6 +25,7 @@ args = vars(ap.parse_args())
 # initialize the ImageSender object with the socket address of the
 # server
 if args['server_ip']:
+    print("Streaming video")
     sender = ImageSender(connect_to="tcp://{}:5555".format(
         args["server_ip"]), send_timeout=10, recv_timeout=10)
 else:
@@ -43,6 +44,7 @@ if platform.system() == 'Linux':
     GPIO.setup(19, GPIO.OUT)
 
 def turn_all_off():
+    print("turn all off")
     if platform.system() == 'Linux':
         GPIO.output(17, GPIO.LOW)
         GPIO.output(18, GPIO.LOW)
@@ -50,16 +52,19 @@ def turn_all_off():
 
 def turn_on_green():
     turn_all_off()
+    print("turn on green")
     if platform.system() == 'Linux':
         GPIO.output(19, GPIO.HIGH)
 
 def turn_on_yellow():
     turn_all_off()
+    print("turn on yellow")
     if platform.system() == 'Linux':
         GPIO.output(17, GPIO.HIGH)
 
 def turn_on_red():
     turn_all_off()
+    print("turn on red")
     if platform.system() == 'Linux':
         GPIO.output(18, GPIO.HIGH)
 
@@ -91,11 +96,11 @@ last_object_face_detect_time = time.time()
 
 def new_frame_callback(frame):
     global person_count, face_count
+    print(f"Person: {person_count}, Face: {face_count}")
     if sender:
         frame_queue.put_nowait(frame)
 
     if person_count >= 8:
-        person_flag = True
         if face_count >= 7:
             turn_on_green()
 
@@ -104,6 +109,9 @@ def new_frame_callback(frame):
 
         else:
             turn_on_yellow()
+
+    if person_count >=4 and person_count < 8 and face_count <=3:
+        turn_on_yellow()
 
     if person_count <= 3:
         turn_all_off()

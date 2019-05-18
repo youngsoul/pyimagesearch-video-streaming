@@ -18,7 +18,7 @@ def face_encode_frame(frame, detection_method, face_detector=None):
     """
 
     :param frame:
-    :param detection_method:
+    :param detection_method: 'hog' or 'cnn'
     :param face_detector None - use face_recognition face_locations method which is accurate at the expense of cpu
                         cycles.
                         detector = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
@@ -41,6 +41,7 @@ def face_encode_frame(frame, detection_method, face_detector=None):
         if platform.system() == 'Linux':
             scale_factor = 1.05
 
+        # rects - is a collection of rectangles contains the ROI of a face
         rects = face_detector.detectMultiScale(gray, scaleFactor=scale_factor,
                                           minNeighbors=5, minSize=(30, 30),
                                           flags=cv2.CASCADE_SCALE_IMAGE)
