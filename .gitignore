@@ -194,3 +194,4 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+encodings/friends_family_encodings.pkl
