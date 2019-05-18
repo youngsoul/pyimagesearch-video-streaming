@@ -15,6 +15,8 @@ and then wrapped those up in my github repo [here](https://github.com/youngsoul/
 
 Beyond that follow the instructions in the PyImageSearch blog for the rest of the live stream work.
 
+my local python virtual env: ~/.virtualenvs/py36cv4_venv
+
 ## ImageZMQ
 
 I am using my fork of this library because I wanted read/write timeouts on the socket.

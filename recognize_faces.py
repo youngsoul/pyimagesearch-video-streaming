@@ -5,16 +5,19 @@ import cv2
 import imutils
 import platform
 
-
-encodings_file = "./encodings/pr_encodings.pkl"
-
-# load the known faces and embeddings
-print("[INFO] loading encodings...")
-data = pickle.loads(open(encodings_file, "rb").read())
-print("[INFO] loading encodings... DONE")
+data = None
 
 
-def face_encode_frame(frame, detection_method, face_detector=None):
+def load_encodings(encodings_file):
+    global data
+    if data is None:
+        # load the known faces and embeddings
+        print("[INFO] loading encodings...")
+        data = pickle.loads(open(encodings_file, "rb").read())
+        print("[INFO] loading encodings... DONE")
+
+
+def face_encode_frame(frame, detection_method, encodings_file, face_detector=None):
     """
 
     :param frame:
@@ -23,8 +26,14 @@ def face_encode_frame(frame, detection_method, face_detector=None):
                         cycles.
                         detector = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
                         is much more efficient, and suitable for RPI but less accurate
+    :param encodings_file - file with facial encodings
+
     :return: frame and list of found names
     """
+    if encodings_file is None:
+        return
+    # else we have an encodings so we can look for faces
+    load_encodings(encodings_file)
 
     # convert the input frame from BGR to RGB then resize it to have a width
     # of 750px (to speedup processing)
@@ -43,8 +52,8 @@ def face_encode_frame(frame, detection_method, face_detector=None):
 
         # rects - is a collection of rectangles contains the ROI of a face
         rects = face_detector.detectMultiScale(gray, scaleFactor=scale_factor,
-                                          minNeighbors=5, minSize=(30, 30),
-                                          flags=cv2.CASCADE_SCALE_IMAGE)
+                                               minNeighbors=5, minSize=(30, 30),
+                                               flags=cv2.CASCADE_SCALE_IMAGE)
 
         # OpenCV returns bounding box coordinates in (x, y, w, h) order
         # but we need them in (top, right, bottom, left) order, so we
@@ -53,7 +62,6 @@ def face_encode_frame(frame, detection_method, face_detector=None):
         boxes = [(y, x + w, y + h, x) for (x, y, w, h) in rects if w > 70 and h > 70]
     else:
         boxes = face_recognition.face_locations(rgb_image, model=detection_method)
-
 
     if len(boxes) == 0:
         # then we have no faces.. so just get out

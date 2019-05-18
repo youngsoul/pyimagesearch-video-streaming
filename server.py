@@ -27,12 +27,20 @@ ap.add_argument("-fd", "--face-detect", required=False, type=int, default=0,
                 help="0 - no face detection, 1 - face detection")
 ap.add_argument("-dm", "--detection-method", type=str, default='hog',
                 help="face detection model to use: either 'hog' or 'cnn' ")
+ap.add_argument("-ef", "--encoding-file", type=str, default='',
+                help="face detection model to use: either 'hog' or 'cnn' ")
 
 args = vars(ap.parse_args())
+
+
+encoding_file = args['encoding_file']
+if not encoding_file:
+    encoding_file = None
 
 face_detect = 0
 if args['face_detect'] != 0:
     face_detect = 1
+
 
 detection_method = args['detection_method']
 
@@ -145,7 +153,7 @@ while True:
                 if CLASSES[idx] == 'person':
                     # face detect
                     if face_detect:
-                        frame, names = face_encode_frame(frame, detection_method)
+                        frame, names = face_encode_frame(frame, detection_method, encoding_file)
                         if names:
                             print(f"Found: {names}")
 

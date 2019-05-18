@@ -8,7 +8,7 @@ import time
 
 class ObjectDetection:
 
-    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None, frame_callback=None, object_detect_callback=None, face_recognize_callback=None):
+    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None, frame_callback=None, object_detect_callback=None, face_recognize_callback=None, encodings_files=None):
         """
 
         :param detection_method: hog or cnn
@@ -25,6 +25,7 @@ class ObjectDetection:
         self.face_recognize_callback = face_recognize_callback
         self.recognize_faces = recognize_faces
         self.detection_method = detection_method
+        self.encodings_file = encodings_files  # encodings file from trained images
         # initialize the list of class labels MobileNet SSD was trained to
         # detect, then generate a set of bounding box colors for each class
         self.CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
@@ -103,7 +104,7 @@ class ObjectDetection:
                             # print("found person")
                             # face detect
                             if self.recognize_faces:
-                                frame, names = face_encode_frame(frame, self.detection_method, self.face_detector)
+                                frame, names = face_encode_frame(frame, self.detection_method, self.encodings_file,  self.face_detector)
                                 if names:
                                     if self.face_recognize_callback:
                                         self.face_recognize_callback(names)
