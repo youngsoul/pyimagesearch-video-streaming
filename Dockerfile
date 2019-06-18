@@ -22,7 +22,7 @@ RUN pip install numpy
 RUN cd opencv-4.1.0 && mkdir build && cd build \
     && cmake -D CMAKE_BUILD_TYPE=RELEASE \
         -D CMAKE_INSTALL_PREFIX=/usr/local \
-        -D OPENCV_EXTRA_MODULES_PATH=/home/pi/opencv_contrib/modules \
+        -D OPENCV_EXTRA_MODULES_PATH=/home/pi/opencv_contrib-4.1.0/modules \
         -D ENABLE_NEON=ON \
         -D ENABLE_VFPV3=ON \
         -D BUILD_TESTS=OFF \
@@ -36,12 +36,24 @@ RUN cd opencv-4.1.0 && mkdir build && cd build \
 
 WORKDIR /home/pi
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install Click==7.0
+RUN pip install dlib==19.17.0
+RUN pip install face-recognition==1.2.3
+RUN pip install face-recognition-models==0.3.0
+RUN pip install imutils==0.5.2
+RUN pip install numpy==1.16.2
+RUN pip install Pillow==6.0.0
+RUN pip install pyzmq==18.0.1
+RUN pip install zmq==0.0.0
+
+#COPY requirements.txt ./
+#RUN pip install --no-cache-dir -r requirements.txt
 
 RUN mv opencv-4.1.0/ opencv
 RUN mv opencv_contrib-4.1.0/ opencv_contrib
 
+RUN rm opencv_contrib.zip
+RUN rm opencv.zip
 
 COPY . .
 
