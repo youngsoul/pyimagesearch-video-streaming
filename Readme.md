@@ -131,6 +131,22 @@ Create a directory
 - ObjectDetection.py
 
 
+## If using OpenVINO and NCS compute stick, and if you have installed OpenVINO CV2 support
+NOTE:  You apparently cannot install both OpenCV4.0.1 AND OpenVINO OpenCV on the same raspberry pi.
+
+You will need to link this version:
+Where the python version (python3.5 in this example) will be different depending upon your version on the raspberrypi
+
+ln -s /home/pi/openvino/inference_engine_vpu_arm/python/python3.5/cv2.cpython-35m-arm-linux-gnueabihf.so cv2.so
+cv2.so -> /home/pi/openvino/inference_engine_vpu_arm/python/python3.5/cv2.cpython-35m-arm-linux-gnueabihf.so
 
 
+The non-OpenVINO version of opencv on the raspberry pi is located at:
+
+cv2.so -> /home/pi/cv2lib/cv2.cpython-36m-arm-linux-gnueabihf.so
+
+
+## Docker
+docker build -t rpi-opencv-face-recognition .
+docker run -it --rm --name my-running-app my-python-app
 

@@ -8,7 +8,7 @@ import time
 
 class ObjectDetection:
 
-    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None, frame_callback=None, object_detect_callback=None, face_recognize_callback=None, encodings_files=None):
+    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None, frame_callback=None, object_detect_callback=None, face_recognize_callback=None, encodings_files=None, use_ncs2=False):
         """
 
         :param detection_method: hog or cnn
@@ -33,7 +33,11 @@ class ObjectDetection:
                         "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
                         "sofa", "train", "tvmonitor"]
         self.net = cv2.dnn.readNetFromCaffe("./MobileNetSSD_deploy.prototxt", "./MobileNetSSD_deploy.caffemodel")
-        self.CONSIDER = set(["dog", "person", "car"])
+        if use_ncs2:
+            # specify the target device as the Myriad processor on the NCS
+            self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_MYRIAD)
+
+        self.CONSIDER = set(["dog", "person", "car", "chair", "bottle"])
         self.objCount = {obj: 0 for obj in self.CONSIDER}
         self.min_confidence = min_confidence
         self.face_detector = face_detector
