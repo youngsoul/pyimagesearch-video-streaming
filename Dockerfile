@@ -46,15 +46,9 @@ RUN pip install Pillow==6.0.0
 RUN pip install pyzmq==18.0.1
 RUN pip install zmq==0.0.0
 
-#COPY requirements.txt ./
-#RUN pip install --no-cache-dir -r requirements.txt
-
 RUN mv opencv-4.1.0/ opencv
 RUN mv opencv_contrib-4.1.0/ opencv_contrib
 
 RUN rm opencv_contrib.zip
 RUN rm opencv.zip
 
-COPY . .
-
-CMD [ "python", "./test_file.py" ]
