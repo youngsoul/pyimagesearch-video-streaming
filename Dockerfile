@@ -19,24 +19,20 @@ RUN unzip opencv.zip
 RUN unzip opencv_contrib.zip
 
 RUN pip install numpy
-WORKDIR /home/pi/opencv-4.1.0
-RUN mkdir build
-WORKDIR /home/pi/opencv-4.1.0/build
+RUN cd opencv-4.1.0 && mkdir build && cd build \
+    && cmake -D CMAKE_BUILD_TYPE=RELEASE \
+        -D CMAKE_INSTALL_PREFIX=/usr/local \
+        -D OPENCV_EXTRA_MODULES_PATH=/home/pi/opencv_contrib/modules \
+        -D ENABLE_NEON=ON \
+        -D ENABLE_VFPV3=ON \
+        -D BUILD_TESTS=OFF \
+        -D OPENCV_ENABLE_NONFREE=ON \
+        -D INSTALL_PYTHON_EXAMPLES=OFF \
+        -D BUILD_EXAMPLES=OFF /home/pi/opencv-4.1.0 \
+    && make -j4 \
+    && make install \
+    && ldconfig
 
-RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
-    -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D OPENCV_EXTRA_MODULES_PATH=/home/pi/opencv_contrib/modules \
-    -D ENABLE_NEON=ON \
-    -D ENABLE_VFPV3=ON \
-    -D BUILD_TESTS=OFF \
-    -D OPENCV_ENABLE_NONFREE=ON \
-    -D INSTALL_PYTHON_EXAMPLES=OFF \
-    -D BUILD_EXAMPLES=OFF /home/pi/opencv-4.1.0
-
-RUN make -j4
-
-RUN make install
-RUN ldconfig
 
 WORKDIR /home/pi
 
