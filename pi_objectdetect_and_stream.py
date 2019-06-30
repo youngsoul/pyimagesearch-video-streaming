@@ -1,8 +1,11 @@
 from ObjectDetection import ObjectDetection
 import cv2
-from imagezmq.asyncimagesender import AsyncImageSender
 import socket
 import argparse
+import sys
+sys.path.insert(0, '/home/pi/dev/imagezmq')  # imagezmq.py is in ../imagezmq
+
+from imagezmq.asyncimagesender import AsyncImageSender
 
 # get the host name, initialize the video stream, and allow the
 # camera sensor to warmup
