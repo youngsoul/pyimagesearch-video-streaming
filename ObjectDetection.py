@@ -49,9 +49,6 @@ class ObjectDetection:
         while True:
             frame = self.video_stream.read()
 
-            if self.frame_callback:
-                self.frame_callback(frame)
-
             # resize the frame to have a maximum width of 400 pixels, then
             # grab the frame dimensions and construct a blob
             # print(f"Original: {frame.shape[:2]}")
@@ -126,6 +123,9 @@ class ObjectDetection:
                         self.object_detect_callback(None)
                     if self.face_recognize_callback:
                         self.face_recognize_callback(None)
+
+            if self.frame_callback:
+                self.frame_callback(frame)
 
             if self.show_image:
                 cv2.imshow("Image", frame)

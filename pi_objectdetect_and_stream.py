@@ -31,6 +31,7 @@ else:
 
 
 def new_frame_callback(frame):
+    print("New Frame Callback")
     sender.send_frame_async(frame)
 
 
