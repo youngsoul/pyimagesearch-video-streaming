@@ -20,7 +20,7 @@ class ObjectDetection:
                             More efficient face detector, but not as accurate.
 
         """
-        self.show_image = True
+        self.show_image = show_image
         self.frame_callback = frame_callback
         self.object_detect_callback = object_detect_callback
         self.face_recognize_callback = face_recognize_callback
