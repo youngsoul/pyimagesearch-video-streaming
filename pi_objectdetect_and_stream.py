@@ -21,7 +21,7 @@ args = vars(ap.parse_args())
 # initialize the ImageSender object with the socket address of the
 # server
 if args['server_ip']:
-    sender = AsyncImageSender(server_name=rpiName, server_ip=args['server_id'], port=5555, send_timeout=10, recv_timeout=10)
+    sender = AsyncImageSender(server_name=rpiName, server_ip=args['server_ip'], port=5555, send_timeout=10, recv_timeout=10)
 else:
     sender = None
 
