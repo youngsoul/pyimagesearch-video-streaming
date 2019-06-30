@@ -42,7 +42,7 @@ if sender is None:
 detector = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
 
 object_detection = ObjectDetection(use_pi_camera=True, recognize_faces=True, face_detector=detector, show_image=False,
-                                   frame_callback=cb, detection_method='hog', encodings_files='./encodings/friends_family_encodings.pkl')
+                                   frame_callback=cb, detection_method='hog', encodings_files='./encodings/pr_encodings.pkl')
 
 print("Starting image detection")
 object_detection.detect_objects()
