@@ -8,7 +8,7 @@ import time
 
 class ObjectDetection:
 
-    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None, frame_callback=None, object_detect_callback=None, face_recognize_callback=None, encodings_files=None, use_ncs2=False):
+    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None, frame_callback=None, object_detect_callback=None, face_recognize_callback=None, encodings_files=None, use_ncs2=False, show_image=True):
         """
 
         :param detection_method: hog or cnn
@@ -20,6 +20,7 @@ class ObjectDetection:
                             More efficient face detector, but not as accurate.
 
         """
+        self.show_image = True
         self.frame_callback = frame_callback
         self.object_detect_callback = object_detect_callback
         self.face_recognize_callback = face_recognize_callback
@@ -126,10 +127,11 @@ class ObjectDetection:
                     if self.face_recognize_callback:
                         self.face_recognize_callback(None)
 
-            cv2.imshow("Image", frame)
-            # detect any kepresses
-            key = cv2.waitKey(1) & 0xFF
+            if self.show_image:
+                cv2.imshow("Image", frame)
+                # detect any kepresses
+                key = cv2.waitKey(1) & 0xFF
 
-            # if the `q` key was pressed, break from the loop
-            if key == ord("q"):
-                break
+                # if the `q` key was pressed, break from the loop
+                if key == ord("q"):
+                    break
