@@ -2,13 +2,7 @@ from ObjectDetection import ObjectDetection
 import cv2
 from imagezmq.asyncimagesender import AsyncImageSender
 import socket
-import time
 import argparse
-from queue import Queue
-
-frame_queue = Queue()
-
-timestamp_of_last_socket_refresh = time.time()
 
 # get the host name, initialize the video stream, and allow the
 # camera sensor to warmup
