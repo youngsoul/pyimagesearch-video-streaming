@@ -1,0 +1,1 @@
+docker run -it -v /dev/video0:/dev/video0 -v "$PWD":/home/pi rpi-opencv-face-recognition:latest bash
