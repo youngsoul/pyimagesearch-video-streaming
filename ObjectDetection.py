@@ -8,7 +8,7 @@ import time
 
 class ObjectDetection:
 
-    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None, frame_callback=None, object_detect_callback=None, face_recognize_callback=None, encodings_files=None, use_ncs2=False, show_image=True):
+    def __init__(self, detection_method='hog', recognize_faces=False, use_pi_camera=False, min_confidence=0.2, face_detector=None, frame_callback=None, object_detect_callback=None, face_recognize_callback=None, encodings_files=None, use_ncs2=False, show_image=True, rotate_image=0):
         """
 
         :param detection_method: hog or cnn
@@ -21,6 +21,7 @@ class ObjectDetection:
 
         """
         self.show_image = show_image
+        self.rotate_image = rotate_image
         self.frame_callback = frame_callback
         self.object_detect_callback = object_detect_callback
         self.face_recognize_callback = face_recognize_callback
@@ -48,6 +49,9 @@ class ObjectDetection:
     def detect_objects(self):
         while True:
             frame = self.video_stream.read()
+            if self.rotate_image != 0:
+                if frame is not None:
+                    frame = imutils.rotate(frame, self.rotate_image)
 
             # resize the frame to have a maximum width of 400 pixels, then
             # grab the frame dimensions and construct a blob
