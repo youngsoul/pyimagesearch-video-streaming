@@ -22,6 +22,8 @@ args = vars(ap.parse_args())
 # server
 if args['server_ip']:
     sender = AsyncImageSender(server_name=rpiName, server_ip=args['server_ip'], port=5555, send_timeout=10, recv_timeout=10)
+    sender.run_in_background()
+
 else:
     sender = None
 
