@@ -14,12 +14,16 @@ print(f"Running as host: {rpiName}")
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-s", "--server-ip", required=False, default=None,
+ap.add_argument("-s", "--server-ip", required=False, default="192.168.1.208",
                 help="ip address of the server to which the client will connect")
 ap.add_argument("-w", "--window", required=False, type=bool, default=False, help="show a local window, True/False")
+ap.add_argument("-r", "--rotate", required=False, default=0, help="Rotate the image by the provided degrees")
 
 args = vars(ap.parse_args())
 show_window = args['window']
+
+rotation = args['rotate']
+
 
 # initialize the ImageSender object with the socket address of the
 # server
@@ -42,7 +46,7 @@ if sender is None:
 
 detector = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
 
-object_detection = ObjectDetection(use_pi_camera=True, recognize_faces=True, face_detector=detector, show_image=show_window, rotate_image=90,
+object_detection = ObjectDetection(use_pi_camera=True, recognize_faces=True, face_detector=detector, show_image=show_window, rotate_image=rotation,
                                    frame_callback=cb, detection_method='hog', encodings_files='./encodings/pr_encodings.pkl')
 
 print("Starting image detection")
