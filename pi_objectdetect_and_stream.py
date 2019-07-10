@@ -22,7 +22,7 @@ ap.add_argument("-r", "--rotate", required=False, default=0, help="Rotate the im
 args = vars(ap.parse_args())
 show_window = args['window']
 
-rotation = args['rotate']
+rotation = int(args['rotate'])
 
 
 # initialize the ImageSender object with the socket address of the
