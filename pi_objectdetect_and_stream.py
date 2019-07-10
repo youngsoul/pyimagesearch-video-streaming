@@ -16,14 +16,16 @@ print(f"Running as host: {rpiName}")
 ap = argparse.ArgumentParser()
 ap.add_argument("-s", "--server-ip", required=False, default=None,
                 help="ip address of the server to which the client will connect")
+ap.add_argument("-w", "--window", required=False, type=bool, default=False, help="show a local window, True/False")
 
 args = vars(ap.parse_args())
+show_window = args['window']
 
 # initialize the ImageSender object with the socket address of the
 # server
 if args['server_ip']:
     print("Initialize AsyncImageSender...")
-    sender = AsyncImageSender(server_name=rpiName, server_ip=args['server_ip'], port=5555, send_timeout=10, recv_timeout=10)
+    sender = AsyncImageSender(server_name=rpiName, server_ip=args['server_ip'], port=5555, send_timeout=10, recv_timeout=10, show_frame_rate=10)
     sender.run_in_background()
 
 else:
@@ -40,7 +42,7 @@ if sender is None:
 
 detector = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
 
-object_detection = ObjectDetection(use_pi_camera=True, recognize_faces=True, face_detector=detector, show_image=False, rotate_image=90,
+object_detection = ObjectDetection(use_pi_camera=True, recognize_faces=True, face_detector=detector, show_image=show_window, rotate_image=90,
                                    frame_callback=cb, detection_method='hog', encodings_files='./encodings/pr_encodings.pkl')
 
 print("Starting image detection")
