@@ -1,1 +1,1 @@
-python pi_objectdetect_and_stream.py
+python pi_objectdetect_and_stream.py --stream 0 --show-image-on-pi 1 --rotate 90
