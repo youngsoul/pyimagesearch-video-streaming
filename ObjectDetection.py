@@ -56,7 +56,7 @@ class ObjectDetection:
             # resize the frame to have a maximum width of 400 pixels, then
             # grab the frame dimensions and construct a blob
             # print(f"Original: {frame.shape[:2]}")
-            frame = imutils.resize(frame, width=400)
+            frame = imutils.resize(frame, width=800)
             (h, w) = frame.shape[:2]
             # print(f"Resized: {frame.shape[:2]}")
             blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)),

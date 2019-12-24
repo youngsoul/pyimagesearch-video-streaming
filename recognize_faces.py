@@ -76,7 +76,7 @@ def face_encode_frame(frame, detection_method, encodings_file, face_detector=Non
     for encoding in encodings:
         # attempt to match each face in the input image to our known encodings
         # tolerance=0.6 default, lower tolerance is more restrictive
-        matches = face_recognition.compare_faces(data['encodings'], encoding, tolerance=0.6)
+        matches = face_recognition.compare_faces(data['encodings'], encoding, tolerance=0.5)
         name = "Unknown"
 
         # check to see if we have found any matches
