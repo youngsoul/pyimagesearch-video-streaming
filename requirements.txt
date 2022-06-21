@@ -3,7 +3,7 @@ dlib==19.17.0
 face-recognition==1.2.3
 face-recognition-models==0.3.0
 imutils==0.5.2
-numpy==1.16.2
+numpy==1.22.0
 opencv-contrib-python==4.1.0.25
 Pillow==6.0.0
 pyzmq==18.0.1
